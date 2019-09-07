@@ -1,0 +1,26 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: 0 0 1 * *
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: NiceLabs/rclone-action@master
+        with:
+          github-token: ${{ secrets.SECRET_TOKEN }}
+          config: ${{ secrets.RCLONE_CONFIG }}
+          config-secret-name: RCLONE_CONFIG
+      - run: sudo apt-get install -qq -o=Dpkg::Use-Pty=0 libarchive-tools pbzip2
+      - name: Build RPi images
+        run: sudo ./build-rpi.sh
+      - name: Build H3 images
+        run: sudo ./build-h3.sh
+      - name: Upload Pre-built images
+        run: rclone copy dist '1drv:devices/ArchLinuxARM' --exclude '.gitkeep' --verbose
