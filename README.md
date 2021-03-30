@@ -1,5 +1,10 @@
 # ArchLinux ARM image
 
+[![Build][build-badge]][build-workflow]
+
+[build-badge]: https://github.com/NiceLabs/alarm-image/actions/workflows/build.yaml/badge.svg
+[build-workflow]: https://github.com/NiceLabs/alarm-image/actions/workflows/build.yaml
+
 ## Pre-built images
 
 <https://aka.pw/archlinuxarm>
@@ -23,4 +28,3 @@
 ## LICENSE
 
 [MIT](LICENSE)
-
