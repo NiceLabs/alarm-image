@@ -3,7 +3,6 @@ set -xeuo pipefail
 NAME="$1"
 BOARD_NAME="$2"
 SAVED_PATH="${3:-${2}.img}"
-ROOTFS="$(mktemp -d)"
 
 cp "${NAME}.img" "${SAVED_PATH}"
 dd \

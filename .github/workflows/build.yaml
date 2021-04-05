@@ -5,22 +5,26 @@ on:
     branches:
       - master
   schedule:
-    - cron: 0 0 1 * *
+    - cron: 0 0 15 * *
 
 jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
       - uses: NiceLabs/rclone-action@master
         with:
           github-token: ${{ secrets.SECRET_TOKEN }}
           config: ${{ secrets.RCLONE_CONFIG }}
           config-secret-name: RCLONE_CONFIG
+      - run: pip install -r requirements.txt
       - run: sudo apt-get install -qq -o=Dpkg::Use-Pty=0 libarchive-tools pbzip2
-      - name: Build RPi images
+      - name: Build Raspberry Pi images
         run: sudo ./build-rpi.sh
-      - name: Build H3 images
+      - name: Build Allwinner H3 images
         run: sudo ./build-h3.sh
       - name: Upload Pre-built images
         run: rclone copy dist '1drv:devices/ArchLinuxARM' --exclude '.gitkeep' --verbose

@@ -1,10 +1,15 @@
 #!/bin/bash
 set -xeuo pipefail
+# SOURCE="https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os"
+SOURCE="http://os.archlinuxarm.org/os"
 
 function make-board() {
-    local NAME="ArchLinuxARM-$1-latest"
-    local SAVED_PATH="dist/$(date +%Y%m)-ArchLinuxARM-${2}.img"
-    ./scripts/download.sh "$NAME"
+    NAME="ArchLinuxARM-$1-latest"
+    ./scripts/precheck.py "$SOURCE/$NAME" || return
+    ./scripts/download.sh "$SOURCE/$NAME"
+    TIMESTAMP="$(stat -c %Z "$NAME.tar.gz")"
+    LABEL="$(date +%Y%m --date "@${TIMESTAMP}")"
+    SAVED_PATH="dist/${LABEL}-ArchLinuxARM-${2}.img"
     ./scripts/make-raspberry-pi-image.sh "$NAME" "$SAVED_PATH"
     pbzip2 --force "$SAVED_PATH"
 }
