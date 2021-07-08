@@ -1,4 +1,4 @@
-# ArchLinux ARM image
+# ArchLinux ARM Pre-built image
 
 [![Build][build-badge]][build-workflow]
 
